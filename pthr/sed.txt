@@ -1,0 +1,3 @@
+sed -i 's/texto_a_buscar/texto_a_reemplazar/g' fichero_a_reemplazar   /// -i sustituye el fichero si ¿¿n crear uno nuevo
+
+sed -i '1d' $i

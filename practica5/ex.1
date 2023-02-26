@@ -1,0 +1,102 @@
+#include <stdio.h>
+
+#include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+
+sem_t s;                                // declaro la variable s de tipo sem_t
+
+static void * funcion1(void* arg);
+static void * funcion2(void* arg);
+
+
+
+int main(void)
+{
+  pthread_t hilo1, hilo2;
+
+  sem_init(&s, 0, 1);                           //inicio el semaforo haciendo referencia a s y con 0 y 1
+
+  pthread_create(&hilo1,NULL, *funcion1, NULL);
+  pthread_create(&hilo2, NULL, *funcion2, NULL);
+
+  pthread_join(hilo1, NULL);
+  pthread_join(hilo2, NULL);
+  
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+
+sem_t s;                                // declaro la variable s de tipo sem_t
+
+static void * funcion1(void* arg);
+static void * funcion2(void* arg);
+
+
+
+int main(void)
+{
+  pthread_t hilo1, hilo2;
+
+  sem_init(&s, 0, 1);                           //inicio el semaforo haciendo referencia a s y con 0 y 1
+
+  pthread_create(&hilo1,NULL, *funcion1, NULL);
+  pthread_create(&hilo2, NULL, *funcion2, NULL);
+
+  pthread_join(hilo1, NULL);
+  pthread_join(hilo2, NULL);
+  
+
+ #include <unistd.h>
+#include <stdio.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
+
+int controller = 0;
+
+static void * thread_1_function(void * arg);
+static void * thread_2_function(void * arg);
+
+sem_t sem1;
+
+void *thread_1_function(void *arg)
+{
+    while (1)
+    {
+        if (controller == 1)
+            break;
+    }
+    // sleep(1);
+    sem_wait(&sem1);
+    printf("H1\n");
+    pthread_exit(NULL);
+    sem_post(&sem1);
+}
+
+void *thread_2_function(void *arg)
+{
+    sem_wait(&sem1);
+    printf("H2\n");
+    controller = 1;
+    pthread_exit(NULL);
+    sem_post(&sem1);
+}
+
+int main(void)
+{
+    pthread_t tid1, tid2;
+
+    sem_init(&sem1, 0, 1); 
+
+    printf("Before creating the threads\n");
+    if (pthread_create(&tid1, NULL, …

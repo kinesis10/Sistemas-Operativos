@@ -1,0 +1,27 @@
+# Realizar un Script que pida un numero y lo imprima en pantalla corroborando antes si el 
+# el numero ingresado es realmente un numero. 
+
+#!/usr/bin/env bash
+
+clear # Es mas comodo trabajar con la pantalla despejada
+
+VALIDATE_NUMBER=^-?[0-9]+[.][0-9]+?$; 
+# ^-? esta expresion verifica el principio de cadena y si contiene algun caracter
+# [0-9] verifica que sean numeros del 0 al 9
+# el caracter + especifica el operador or 
+# [.][0-9] confirma si el numero ingresado fue un valor decimal
+# ?$ se verifica el final de cadena
+#
+# Con dicha linea se verifica si el numero ingresado a continuacion es positivo, negativo 
+# o decimal
+#
+
+echo "Por favor. Introduzca un numero:"
+read NUMBER
+
+if [[ $NUMBER =~ $VALIDATE_NUMBER ]]; #TODO esta linea no funciona. Desconozco el error
+then
+	echo "El numero ingresado es $NUMBER"
+else
+	echo "El valor ingresado no es un numero"
+fi

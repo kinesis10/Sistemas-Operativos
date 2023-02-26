@@ -1,0 +1,32 @@
+}#Hacer un script que indique la cantidad de archivos y directorios que hay en un directorio cualquiera
+#pasado como argumento, usando estructuras repetitivas.
+
+#!bin/bash
+
+
+echo " ingrese un directorio para indicar la cant de directorios y archivos que contiene"
+
+if [ ! $# -eq 1 ]; then
+  echo " debe ingresar un parametro"
+  exit
+fi
+if [ ! -d $1 ]; then 
+  echo " lo ingresado debe ser un directorio"
+  exit
+fi
+arch=0
+dir=0
+for i in $(ls -a $1); do
+  if [[ -f $i ]]; then
+    arch=$(($arch + 1))
+  
+  else 
+    if [[ -d $i ]]; then// esto estaria mal, xq de cumplirse el primer if no contaria la cant de directorios
+      dir=$((dir + 1))
+ 
+    fi
+  fi
+done
+echo "la cant de archivos que contiene el $1 es $arch"
+echo " la cant de directorios que tiene $1 es $dir"
+

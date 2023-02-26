@@ -1,0 +1,11 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
+
+pthread_t hilo   // declaracion de hilo, se declara en el main
+
+
+int execl(const char *path, const char *arg... NULL);
+                     en el path va el camino /bin/ls     la segunda parte es el propio comando ls 
+

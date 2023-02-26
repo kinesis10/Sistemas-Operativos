@@ -1,0 +1,83 @@
+# Hacer un script que arme un menu de 3 opciones:
+# 1) Guarde una frase ingresada por teclado en un archivo
+# 2) Muestre la frase ingresada en la opcion 1 si es que existe
+# 3) Salir del menu
+
+#!/usr/bin/env bash 
+
+clear # Es prolijo trabajar con la pantalla despejada
+
+RESP=0
+
+rm rf frase_script_menuFrase # Se borra el archivo donde se guarda la frase
+			     # Esto se hace para futuras ejecuciones del script
+		             # para que siempre sea como la primera vez. Si 
+			     # no se borrara, se podria mostrar frases viejas
+function mostrar_menu {
+    clear
+    echo "MENU"
+    echo "1) Ingresar frase"
+    echo "2) Mostrar frase"
+    echo "3) Salir"
+}
+
+while [ ! $RESP -eq 3 ]; # Mientras que el contenido de la variable $RESP sea 
+		      # distinto que 3
+do
+        mostrar_menu # Se llama a la funcion mostrar_menu
+        read RESP # Se lee por teclado
+        case $RESP in # Si el contenido de la variable $RESP es igual a 1
+	1)
+                clear
+                echo "Ingrese frase: "
+                read FRASE
+                echo $FRASE > frase_script_menuFrase.txt
+				        # - Se guarda la frase ingresada en el 
+					# archivo frase_script_menuFrase.txt
+					# - Si el frase_script_menuFrase.txt  
+					# no existe, es creado.
+                clear
+                echo "La frase fue ingresada con exito!"
+                echo "Aguarde un momento"
+                sleep 2
+                mostrar_menu # Se llama a la funcion mostrar_menu
+        ;;
+
+        2) # Si el contenido de la variable $RESP es igual a 2 
+                if [ -e frase_script_menuFrase.txt ]; # Si existe el archivo 
+						      # frase_script_menuFrase
+		then
+                        clear
+                        echo "Frase: $(cat frase_script_menuFrase.txt)" 
+						       # Se muestra en pantalla 
+						       # el contenido del
+						       # archivo
+                        sleep 2
+                        mostrar_menu # Se llama a la funcion mostrar_menu
+                else
+                        clear
+                        echo "Primero debe cargar una frase."
+                        echo "Aguarde un momento"
+			sleep 3
+                        mostrar_menu # Se llama a la funcion mostrar_menu
+                fi # Fin del IF interno
+        ;;
+
+        3) # Si el contenido de la variable $RESP es igual a 3
+	    clear
+	    echo " "
+            echo "Adios. Gracias por utilizar este script"
+	    echo " "
+            exit # Se aborta el script
+        ;;
+	*)
+	    clear
+	    echo " "
+	    echo "ERROR"
+	    echo "Disculpe. Debe ingresar alguna de las opciones mencionadas"
+	    echo "Aguarde unos segundos"
+	    sleep 3
+	    mostrar_menu # Se llama a la funcion mostrar_menu
+	;;
+	esac
+done # Fin del WHILE

@@ -1,0 +1,26 @@
+fdisk -l muestra los discos o puede ser tambien el df
+cant disco rig 1 particiones 3 y  
+
+2)
+2 discos 
+
+6)
+chown cambio permisos a dueño
+chmod usuario archivo
+chgrp usuario archivo
+chmod o+r -w -x
+
+7) chmod u+t nombreArchivo    //modificado el nombre por root o por el dueño del archivo
+8)
+ls -l | awk '{print $9}'
+find -type f | wc -l (archivos)
+
+
+11)=ls -lS | head -2 | tail -1 | cut -d "" -f4
+
+12)df | grep -w "/" | awk '{print $2,$3,$4}'
+
+13)crear enlace 
+ln -s nombreArchivo nombreEnlace
+crea un puntero hacia la direccion donde esta el enlace, si hag0 un cat en ambos archivos me mostraria lo mismo
+

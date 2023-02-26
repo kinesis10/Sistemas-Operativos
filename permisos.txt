@@ -1,0 +1,32 @@
+    # los traje con ls -la | cat >permisos.txt
+drwxrwxr-x  3 pablo pablo    4096 jul  9 12:25 .
+drwxr-xr-x 10 pablo pablo    4096 jul  8 17:00 ..
+-rw-rw-r--  1 pablo pablo      18 jun 30 17:34 archivo nuevo.txt
+-rw-rw-r--  1 pablo pablo     680 jun 30 19:26 archivos1
+-rw-rw-r--  1 pablo pablo       8 jun 30 18:42 ex1.1
+-rw-rw-r--  1 pablo pablo      63 jul  1 15:47 ex1.1.sh
+-rw-rw-r--  1 pablo pablo     895 jun 30 18:41 ex1.sh
+-rw-rw-r--  1 pablo pablo     153 jun 30 18:40 ex2.sh
+-rw-       rw-   r--       1      pablo   pablo     116 jul  8 15:00 extend
+
+usuario   grupo  otros    enlaces dueño  grupo     tamaño
+ 110       110    100	  (en binario)
+  6         6      4      (en octal)
+ 111       111    101
+  7         7      5       (aca tiene todos los permisos el usu y el grupos péro otros solo tiene permisos de ejecucion)
+# chmod 775 en octal ( aca usu y el grupo tienen todos los permisos, menos otros solo que no tiene de escritura
+# chmod ug+rwx o+rx
+# chow cambia el usuario/ dueño del archivo
+# chgrp cambia grupo
+
+ 000 Sin permisos
+ 100 r-- lectura r (4 en octal)
+ 101 r-x           ( 5) ejecucion y lectura
+ 110 rw-            (6)  lectura escritura
+ 111 rwx	   (7)  todos lso permisos  
+r->lectuta
+w->escritura
+x->ejecucion
+#Calculo los tamaños
+tam1=$(du -s $1 | cut -d " " -f1)
+tam2=$(du -s $2 | cut -d " " -f1)

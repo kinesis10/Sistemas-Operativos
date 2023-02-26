@@ -1,0 +1,144 @@
+19)
+#include <stdio.h>
+#include <sydlib.h>
+
+int main() {
+ int i;
+ int suma=0;
+ for (i=0; i<6; i++){
+ suma=suma+i
+ }
+ printf("%d\n",suma);
+ return 0; 
+};
+
+para compilas 
+./nuevo
+gcc nuevo.c -o nuevo
+./nuevo
+2)
+
+int main()={
+  int i;
+  int j;
+  int vector[10];
+  for (i=0;i<10; i++){
+  printf("ingrese un numero);
+  scanf("%d",&vector[i])
+  for (i =0;i<10 ;i++){
+    if(vector[i]<vector[j])
+      vector[i]=vector[j];
+      vector[j]=p;
+      
+    }
+    for(.falta el printf para mostrar el vector.)
+  
+  }
+  return 0;
+}
+
+3)
+
+#!/bin/bash
+
+touch process
+ps aux > process | awk '{print $1,$2}' > solusu
+tar tvzf proc-usu-.tar.gz process solousu
+
+4)
+#Crear un script al cual se le pase como argumento un nombre de usuario y muest>
+#está ejecutando ese usuario. En caso de que no se pase ningún argumento, debe >
+#procesos en ejecución, y en caso de que el usuario pasado como argumento sea r>
+#mensaje de error
+#!/bin/bash
+
+if [[ $# -eq 1 ]]; then
+  if [[ $1 == root ]]; then}
+    echo "error"
+    exit
+  fi
+  ps aux | grep ^$1
+fi
+
+if [[ $# -eq 0 ]]; then
+  ps aux
+fi
+
+#!/bin/bash
+#otra forma
+
+if [[ $# -eq 1 ]]; then
+  if [[ $1 == "root" ]]; then
+  echo error
+  exit
+  else
+   ps aux | grep $1 
+  fi
+else
+    ps aux
+fi  
+
+
+5)
+#!/bin/bash
+
+while true; do
+  cat /etc/passwd > /dev/null  // manda a dev a la basura
+  
+done
+  usar & al final para ejecutarlo en segundo plano, me devuelve el control(./nombre.sh &)
+  para matarlo kill numProceso
+  
+6)
+#!/bin/bash
+pgrep devuelve los id de procesos que esta corriendo un usuario determinado (pgrep -u admi archivo)
+
+usar un for... si ingresa mas de 10 matar el proceso 
+pgrep y sleep para que se frene
+  despues con el top muestra llos procesos 
+
+
+#!/bin/bash
+#Crear un script simple que genere una iteración de 1 a 10, por parámetro ingresar en que momento #quiere cortar esa iteración y devolver el control del bash. (Sugerencias: comando “pgrep” y usar #comando sleep
+#como para retrasar la ejecución y observar el resultado ).
+
+for i in $(seq 1 10); do
+  if [[ $1 -eq i ]]; then
+    pgrep $i
+  fi
+done
+-------------
+for i in $(seq 1 10); do
+  echo $i
+  if [[ $1 -eq $i ]]; then
+    pgrep $i
+  fi
+done
+-----------------
+
+
+
+awk 
+7
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main()
+{
+int pid;
+pid = fork();
+
+printf("%d\n",pid);
+printf("soy el padre\n");
+if ( pid == 0){
+  printf("y yo soy el hijo\n");
+  }
+
+return 0;
+}
+8. Crear una rutina en lenguaje C donde se crea un proceso hijo, esta rutina debe tener como salida lo
+siguiente:
+Soy el hijo, “Nro de mi ProcessID”, Mi Padre es “ProcessID del Padre”
+Soy el padre, “Nro de mi ProcessID”, Mi Padre es “ProcessID del Padre del Padre
+

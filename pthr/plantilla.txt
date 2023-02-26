@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+
+sem_t semafoto;                              
+
+static void * alfunaFuncion1(void* arg);
+static void * algunaFuncion2(void* arg);
+
+
+
+int main(void)
+{
+  pthread_t h1, h2;
+
+  sem_init(&semaforo, 0, 1);           
+
+  pthread_create(&h1,NULL, *algunaFuncion1, NULL);
+  pthread_create(&h2, NULL, *algunaFuncion2, NULL);
+
+  pthread_join(hilo1, NULL);
+  pthread_join(hilo2, NULL);
+  
+
+  return 0;
+}
+static void * funcion1(void* arg){
+ //codigo
+ }
+static void * funcion2(void* arg){
+//codigo
+}
+

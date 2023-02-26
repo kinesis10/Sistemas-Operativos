@@ -1,0 +1,62 @@
+# Realizar un Script que compruebe la existencia de un usuario y un grupo en el sistema
+# El usuario y el grupo puede ser pasado por parametro o no.
+#! /bin/bash
+
+clear # Siempre es aconsejable trabajar con la pantalla despejada
+
+if [ ! $# = 2  ]; # Si la cantidad de parametros otorgados es distinta a dos, pide los datos 
+		 # por pantalla
+then
+	echo "Buen dia. Introduzca un usuario:"
+	read USER
+	echo " "
+	echo "Genial! Ahora introducza un grupo:"
+	read GROUP
+else
+	USER=$1 # Prestar siempre atencion a los espacios. En este caso no hay
+	GROUP=$2
+fi # Finalizacion del IF
+
+NUMBER_USER=$( grep -i $USER:.* /etc/passwd | wc -l ) # Variables siempre en 
+NUMBER_GROUP=$( grep -i $GROUP:.* /etc/group | wc -l ) # mayusculas
+
+# - Lo que se hizo con la serie de comandos anteriores fue:
+# 	- Con el comando "grep" se listaron las lineas que posean a la variable $USER en 
+#	el archivo /etc/passwd. Este archivo aloja una lista de los usarios en el sistema.
+# 	- Luego con el comando "wc -l" se conto la cantidad de lineas que poseian a la
+#	variable $USER. Si todo funciona normalmente, en caso de considencia no deberia 
+#	existir mas de una linea de coincidencia. 
+#	- Finalmente se guarda el valor resultante en la varibale $NUMBER_USER
+#	- Con la variable $NUMBER_GROUP se realizan las mismas operaciones con el archivo 
+#	/etc/group el cual aloja una lista de los grupos en el sistema
+#
+#
+#	- Recuerda siempre trabajar con variables. De esta forma sera mas legible el codigo
+#
+
+EXISTE="Ya existe en el sistema"
+NO_EXISTE="No existe en el sistema"
+
+echo " "
+if [ $NUMBER_USER -gt 0 ]; # El comparador -gt significa "mas grande que"
+then 
+	if [ $NUMBER_GROUP -gt 0 ];
+	then
+		echo "Usuario $USER : $EXISTE "
+		echo "Grupo $GROUP : $EXISTE "
+	else
+		echo "Usuario $USER : $EXISTE "
+		echo "Grupo $GROUP : $NO_EXISTE "
+	fi # Fin del IF interno
+
+elif [ $NUMBER_GROUP -gt 0 ];
+then
+	echo "Usuario $USER : $NO_EXISTE "
+	echo "Grupo $GROUP : $EXISTE "
+else
+	echo "Usuario $USER : $NO_EXISTE "
+	echo "Grupo $GROUP : $NO_EXISTE "
+fi # Fin del IF general
+
+echo " "
+echo "Ha sido un gusto. Adios"

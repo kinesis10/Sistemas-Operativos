@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main () {
+  int i;
+  int j;
+  int vector [10];
+  for (i=0; i<10; i++){
+    printf("ingrese un numero");
+    scanf("%d",&vector[i]);
+   };
+  for (i=0; i<10; i++) {
+    if (vector[i] < vector[j])
+      vector[i] = vector[j];
+      vector[j] = pclose;
+
+  }
+  for (i=0; i<10; i++) {
+  printf("%d",vector[i]);
+  }
+return 0;  
+}
+

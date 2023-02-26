@@ -1,0 +1,51 @@
+# Dado un directorio pasado como parametro:
+# 1) Verificar que no falte el parametro y que realmente sea un directorio
+# 2) Buscar todos los archivos .JPG y .PNG y copiarlos a una carmeta MIS_IMAGENES
+# 3) Empaquetar y comprimir la carpeta MIS_IMAGENES
+
+#!/usr/bin/env bash
+
+clear # Siempre es mas prolijo trabajar con la pantalla despejada
+
+if [ ! $1 ]; # Si no existe el parametro...
+then
+        echo "El script solicita 1 parametro"
+        exit # Si el parametro no fue pasado, se aborta el script
+fi
+
+if [ ! -d $1 ]; # Si el parametro no es un directorio...
+then
+        echo "El parametro debe ser un directorio"
+        exit # Si el pametro no es un directorio, se aborta el script.
+fi
+
+mkdir $HOME/MIS_IMAGENES # - Crea un directorio con el nombre MIS_IMAGENES en $HOME, es decir,
+			 # lo crea en /home/nombre_usaurio/MIS_IMAGENES
+			 # - Si el directorio ya existe, no lo vuelve a crear
+			 # - Un dato para agregar es que siempre se debe tratar de usar la 
+			 # variable $HOME en vez de la ruta /home/nombre_usuario. De esta 
+			 # forma se le otorga portabilidad al script. 
+
+find $1 -type f -name "*.jpg" -o -name "*.png" -exec cp {} $HOME/MIS_IMAGENES \;
+
+# - El comando find sirve para buscar archivos. Primero se le pasa el lugar de busqueda, es 
+# decir, el directorio pasado por parametro. Luego se le dice que busque archivos comunes 
+# con la opcion -type f. Despues, que de los archivos comunes que encuentre, solo recoja 
+# aquellos que terminen en .jpg o en .png (formatos comunes de imagenes)
+# - Luego envia los archivos obtenidos al directorio que hemos creado.
+
+tar -czf $HOME/MIS_IMAGENES.tar MIS_IMAGENES .exec cp {} $HOME/misimagenes \;
+
+# - Con el comando tar se pueden empaquetar y comprimir archivos. La opcion -c 
+# indica que el comando tar debe crear un archivo. La opcion -f indica que el 
+# nombre que sigue es el nombre del archivo resultante. El ultimo nombre sera 
+# el archivo a empaquetar y, en este caso, a comprimir. La opcion -z lo que 
+# sera decirle a tar que comprima el archivo empaquetado que cree. 
+
+# - Un dato no poco importante es que este script se debe ejecutar en $HOME 
+# para su correcto funcionamiento. 
+
+echo "Se han guardado todas las imagenes en la carpeta MIS_IMAGENES en $HOME"
+echo "Espero que le haya gustado. Que tenga un buen dia"
+echo " "  
+

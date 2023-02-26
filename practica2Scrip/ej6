@@ -1,0 +1,5 @@
+#!/bin/bash
+mkdir  nuevoC
+cd nuevoC
+tar -xvzf ../comprimido.tar.gz
+ls -l

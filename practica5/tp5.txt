@@ -1,0 +1,199 @@
+
+
+
+
+
+
+
+
+7
+read .p "ingrese un valor para setear 0,50,100", ni
+if [[ $ni -eq 0 || $ni -eq 50 || $ni -eq 100 ]]; then
+  sysclr vm.swappiness=$ni
+  echo setear
+else
+  echo error
+fi
+8
+total=$(free | awk '{print $2}' | tail -2 | head -1)
+usado=$(free | awk '{print $3}' | tail -2 | head -1)
+let porcentaje=$usado*100/$total
+echo $porcentaje
+
+if [[ $1 -lt $porcentaje ]]; then
+  echo alerta
+fi
+sleep 5
+bash ./nombre $1 //llamo al programa
+
+9
+clear
+fre > mem-actual
+echo "1) 0 No libera nada y cede el control al kernel"
+echo "2) 1 libera pageCache"
+echo "3) 2 libera dentries y inodos"
+echo "4) 3 livera todo
+echo "5) salir"
+read opcion
+case $opcion
+in
+1) sync ; echo 0> /proc/sys/vm/drop_caches
+  clear
+  echo " no libera nada de ram"
+  sleep 10
+  bash ./nombre.sh
+  ;;
+2) sync ; echo 0 > 1 /proc/sys/vm/drop_caches
+  clear
+  echo " se libera page_cache" > mem-limpia
+  echo ""........."  >> mem-limpia
+  free >> mem-limpia
+  sleep 5
+  bash ./nombre.sh
+  ;;
+3) sync ; echo 0 > 1 /proc/sys/vm/drop_caches
+  clear
+  echo " se libera dentries e inodos" > mem-limpia
+  echo ""........."  >> mem-limpia
+  sleep 10
+  bash ./nombre.sh
+  ;;
+  
+4) sync ; echo 0 > 1 /proc/sys/vm/drop_caches
+  clear
+  echo " se libera todo" > mem-limpia
+  echo ""........."  >> mem-limpia
+  sleep 10
+  bash ./nombre.sh
+  ;;
+ 5) echo adios
+    echo exit
+    ;;
+ *) echo " debe ingresar una opcion del 1 al 5"
+ 
+esac
+
+10
+
+memoriaTotal=$(sudo dmidecode --type memory | head | tail -1 | cut -d "" -f3,4)// tiene que ver con el harware de la memoria
+maximoModulo=$(sudo dmidecode --type memory | head -12 | tail -1 | cut -d "" -f4)
+echo $memoriaTotal
+echo la capacidad total es $maximoModulo
+
+
+
+
+
+>Maximum Capacity: 12 GB
+
+# dmidecode 3.3
+Getting SMBIOS data from sysfs.
+SMBIOS 3.2.0 present.
+
+Handle 0x0024, DMI type 16, 23 bytes
+Physical Memory Array
+	Location: System Board Or Motherboard
+	Use: System Memory
+	Error Correction Type: None
+	Maximum Capacity: 12 GB
+	Error Information Handle: No Error
+	Number Of Devices: 2
+
+11
+chequear si laápgina esta en memoria con el bit de validez (0,1)
+chequeo si el desplazamiento esta bien
+dir de inicio + direccion fisica
+el desplaz npo puede superar los 1024
+/bin/bash
+leer la pagina
+pedir un desplazamiento
+tamanio 1024
+chequear que la pagina este en memoria (bit en 1)
+chequear que el despl no supere los 1024
+si es verdadesro calcular dir fisica sumando desde dir de inicio + el desplazamiento
+p0,4096,1
+p1,8192,1
+p2,2048,0
+p3,6144,1
+p4,1024,0
+
+grep "p0" c11 | cut -d"," -f3 //busco el bit de validez
+
+
+opc=1
+while [[ opc -eq 1 ]]; do
+echo nro de pagina
+read  p
+bit=$(grep p$p t11 ¬cit -d "," -f3)
+echo $bit
+if [[ $bit -eq 1 ]]; then
+  echo "ingrese el desplazamiento"
+  read d
+  if [[ $d -gt 1024 ]]; then
+  echo "error"
+  exit
+  else
+      dir=$(grep p$p t11 ¬cit -d "," -f2)
+      let res=$dir + $d
+      
+  fi
+else
+    echo error la pagina no esta en memoria
+fi}
+echo "quiere seguir cargando? , 1 para seguir , otro n para salir
+read $opc
+done
+
+12
+
+
+P0,4096,1
+P1,16384,1
+P2,28672,0
+P3,20480,1
+P4,12288,0
+P5,8192,1
+P6,32768,1
+
+opc=1
+echo inngrese el tamanio de la pagina
+read tamanio
+
+while [[ opc -eq 1 ]]; do
+echo nro de pagina
+read  p
+bit=$(grep p$p $1 | cut $1 -d "," -f3) //ingreso una tabla ṕor parametro
+echo $bit
+if [[ $bit -eq 1 ]]; then
+  echo "ingrese el desplazamiento"
+  read d
+  if [[ $d -gt $tamanio]]; then
+  echo "error"
+  exit
+  else
+      dir=$(grep p$p $1 | cut -d "," -f2)
+      let res=$dir + $d
+      
+  fi
+else
+    echo error la pagina no esta en memoria
+fi}
+echo "quiere seguir cargando? , 1 para seguir , otro n para salir
+read $opc
+done
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+

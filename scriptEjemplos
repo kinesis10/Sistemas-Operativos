@@ -1,0 +1,51 @@
+CREAR USUARIOS 
+#Escriba un script que realice el alta de un usuario (recibiendo el nombre de usuario y la password como parámetros en user, pass)
+#garantizando que: Tendrá permiso de lectura en todos los archivos del directorio /documentos,pertenece al grupo oficina4 ,
+#al finalizar el alta, enviará un mail al root con el nombre de usuario y la pass sin mostrar nada en pantalla.
+
+#!/bin/bash
+clear
+echo "--Creacion de Usuario--"
+
+#Chequeo los parametros
+if [ ! "$1" ]; then
+ echo "Debe pasar un usuario como parametro"
+ exit
+fi
+
+if [ ! "$2" ]; then
+ echo "Debe pasar password como parametro"
+ exit
+fi
+
+echo "Se paso el usuario $1 y la contraseña $2"
+
+#Verifico si existe el grupo oficina4
+oficina4=$(grep oficina4 /etc/group | cut -d ":" -f1)
+
+if [ "$oficina4" = " " ]; then
+ echo "El grupo Oficina4 no existe , por lo tanto sera creado.."
+ #Creo el usuario ya que no existe
+ sudo addgroup oficina4
+else
+ echo "EL grupo Oficina4 existe, se creara al usuario directamente.."
+fi
+
+#Creo el usuario
+sudo useradd -m -p $2 -g "oficina4" -s "/bin/bash" $1
+
+#Asigno permisos de lectura
+chmod +r $HOME/Documentos
+
+#Muestro la linea del /etc/passwd donde esta el usuario creado
+linea=$(cat /etc/passwd | grep $1)
+grupo=$(grep oficina4 /etc/group)
+
+echo "Se creo el usuario $1 en el grupo oficina4"
+echo "/etc/passwd: $linea"
+echo "/etc/group:  $grupo"
+
+#Falta agregar la parte de editar el mail
+
+
+

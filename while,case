@@ -1,0 +1,27 @@
+while [ condicion ]; do
+  echo""
+done
+
+case $variable; in
+caso1)
+    echo ""
+;;
+caso2)
+    echo""
+;;
+*)
+    echo"fin"
+;;
+esac
+verificar un directorio
+if [ ! $# -eq 1 ]; then
+ echo "Debe pasar un parametro"
+ exit
+fi
+
+if [ ! -d $1 ]; then
+ echo "El parametro debe ser un directorio"
+ exit
+fi
+buecar con find
+find $1 -executable  -exec cp -a {} script23_EXECT

@@ -1,0 +1,34 @@
+11
+#/bin/bash
+
+if [[ $# -eq 0 ]]; then
+     echo $(who) > conectados
+else
+   
+    echo $(who grep "pablo" | awk -F "" '{print $1 $4}')) > conectados
+fi
+
+12
+#/bin/bash
+
+cant=$(last | grep -w$1 | grep $2 | wc -l)
+
+echo $cant
+if [[ $cant -eq 0 ]]; then
+    echo "no se conecto"
+else
+    echo "se conecto"
+fi
+
+comando uname, arquitectura del procesador
+uname nombre linux
+uname -p arquitectura del procesador
+uname -o 
+uname -r
+
+echo "arqiuotectura del procesador:" $(uname -p) > detalle
+echo "Nombre:" $(uname -n) > detalle
+echo "SO instalado:" $(uname -o) >> detalle
+echo "version del kernell:" $(uname -r) >> detalle
+
+

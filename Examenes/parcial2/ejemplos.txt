@@ -1,0 +1,231 @@
+=======================================================================================================================
+
+# Dado un directorio pasado como parametro:
+# 1) Verificar que no falte el parametro y que realmente sea un directorio
+# 2) Buscar todos los archivos .JPG y .PNG y copiarlos a una carmeta MIS_IMAGENES
+# 3) Empaquetar y comprimir la carpeta MIS_IMAGENES
+
+#!/bin/bash
+
+if [ ! $1 ]; then
+        echo "El script solicita 1 parametro"
+        exit
+fi
+
+if [ ! -d $1 ]; then
+        echo "El parametro debe ser un directorio"
+        exit
+fi
+
+mkdir $HOME/MIS_IMAGENES
+
+find $1 -type f -name "*.jpg" -o -name "*.png" -exec cp {} $HOME/MIS_IMAGENES \;
+
+tar -czf $HOME/MIS_IMAGENES.tar MIS_IMAGENES
+=======================================================================================================================
+
+
+# Dado un nombre de usuario recibido por parametro:
+# 1) Validar que no falte enviar el parametro
+# 2) Decir si ese usuario se encuentra actualmente conectado al sistema o no
+# 3) Indicar la cantidad total de usuarios de la com53 conectados actualmente al sistema
+# 4) Guardar la salida del script en un archivo llamado usuarios.txt
+
+
+#!/bin/bash
+
+if [ ! $1 ]; then
+        echo "El script solicita 1 parametro"
+        exit
+fi
+
+ESTA_CONECTADO=$(who | grep $1)
+
+if [ "$ESTA_CONECTADO" ];then
+        echo "El usuario $1 esta conectado al sistema" >> usuarios.txt
+else
+        echo "El usuario $1 NO esta conectado al sistema" >> usuarios.txt
+fi
+
+CANTIDAD_CONECTADOS=$(who | cut -d " " -f1 | sort -u | wc -l)
+
+echo "La cantidad de usuarios conectados es $CANTIDAD_CONECTADOS" >> usuarios.txt
+
+cat usuarios.txt
+
+
+=======================================================================================================================
+
+
+# Guardar en un fichero un listado de usuarios y la cantidad de procesos que esta
+# ejecutando cada uno. Ordenar de mayor a menor por cantidad de procesos.
+
+#!/bin/bash
+
+for i in $(cat /etc/passwd | cut -d ":" -f1); do
+        NOM=$i
+        CANT=$(ps -u $i | wc -l)
+        let CANT=$CANT-1
+        echo $CANT $NOM >> usuarios
+done
+
+sort -nr usuarios
+
+=======================================================================================================================
+
+# Hacer un script que cree un directorio usuarios y dentro del mismo
+# cree un fichero por cada usuario que hay en el sistema (el nombre de cada
+# fichero debe ser el nombre de usuario) que contenga la frase: Hola <nombreusuario>
+# y cuyo dueño sea el mismo usuario.
+
+
+#!/bin/bash
+
+# NOTA: Para cambiar dueño con chown se necesitan permisos especiales.
+
+mkdir usuarios
+
+for i in $(cat /etc/passwd | cut -d ":" -f1); do
+        echo "Hola $i" > usuarios/$i
+        chown $i usuarios/$i
+done
+
+=======================================================================================================================
+#!/bin/bash
+
+# Hacer un script que realice los siguientes pasos:
+
+# Crear un archivo con nombre process (usando comando de creacion de archivos)
+touch process
+# En el archivo process agregar todos los procesos que se estan ejecutando en
+# el sistema
+ps aux > process
+# Del archivo process cortar el nombre de usuario y mandarlo al archivo solousu
+cat process | cut -d " " -f1 > solousu
+# Cambiar los permisos de process y solousu para que OTROS no lo pueda VER
+# (el resto de los permisos dejarlos igual)
+chmod o-r process solousu
+# Comprimir y empaquetar el archivo process y solousu como proce2014.tar.gz
+tar -czf proce2014.tar.gz process solousu
+=======================================================================================================================
+
+#!/bin/bash
+
+# Crear un script al cual se le pase como argumento un nombre de usuario y muestre los procesos
+# que esta ejecutando ese usuario. En caso de que no se pase ningun argumento, debe mostrar
+# todos los procesos en ejecucion y en caso de que el usuario pasado como argumento sea root,
+# mostrar un mensaje de error
+
+USUARIO=$1
+
+if [ $# -eq 0 ];then
+        # No pasaron argumento, entonces muestro todos los procesos
+        ps aux
+        else
+        if [ "$USUARIO" = "root" ];then
+                # Usuario es root, entonces muestro mensaje de error
+                echo "ERROR!!!"
+                else
+                # Muestro los procesos de ese usuario
+                ps aux | grep "$USUARIO"
+        fi
+fi
+
+=======================================================================================================================
+#!/bin/bash
+
+# Hacer un script que guarde en el archivo conectados todos los usuarios conectados al sistema y
+# en el archivo procesos todos los procesos que se estan ejecutando en el sistema. Ademas, si al
+# script le paso como parametro un usuario cualquiera me diga si esta conectado o no.
+
+who | cut -d " " -f1 | sort --unique > conectados
+ps aux > procesos
+
+if [ $# -eq 1 ]; then
+        if [ ! -d $1 ] && [ ! -f $1 ]; then
+                ESTA=$(grep $1 conectados)
+                if [ "$ESTA" = "" ]; then
+                        echo "El usuario $1 NO esta conectado al sistema"
+                        else
+                        echo "El usuario $1 esta conectado al sistema"
+                fi
+        fi
+fi
+====================================================================================================================
+
+# Validar que no falte enviar el parámetro
+# Decir si ese usuario se encuentra actualmente conectado al sistema o no
+# Indicar la cantidad total de usuarios de la com15 conectados actualmente al
+sistema
+# Guardar la salida del script en un archivo llamado usuarios.txt
+#!/bin/bash
+if [ ! $1 ]; then
+  echo "El script solicita 1 parámetro"
+  exit
+fi
+ESTA_CONECTADO=$(who | grep $1)
+if [ "$ESTA_CONECTADO" ]; then
+  echo "El usuario $1 esta conectado al sistema" >> usuarios.txt
+else
+  echo "El usuario $1 NO esta conectado al sistema" >> usuarios.txt
+fi
+CANTIDAD_CONECTADOS=$(who | cut -d ""-f1 | sort -u | wc -1)
+echo "La cantidad de usuarios conectados es
+$CANTIDAD_CONECTADOS">> usuarios.txt
+cat usuarios.txt
+====================================================================================================================
+Se desea realizar un informe detallado de los usuarios conectados
+actualmente al sistema. Para ellos se debe crear un directorio "usuarios
+conectados", que contenga un archivo por cada uno de los usuarios conectados
+al momento de ejecución del script. Cada archivo tendrá la siguiente estructura
+de nombre: "datos_<nombre-usuario>.txt". Dentro de cada archivo, detallar en
+//Nombre y Apellido:chesini pablo..........
+//Legajo:31127.....................
+//Usuario:.com23027...................
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+//Realizar una rutina en C que cree 3 hijos. los primeros 2 hijos deben imprimir su PID y PPID, y el 3r hijo calcule la suma de su PID y su PPID.
+int main()
+{
+int i, j;
+printf("creando hijos\n");
+for (i = 0;  i < 3; i++)
+    
+  if (fork() == 1)
+    break;
+if (i == 0){
+    priConnection to docker.linsi.edu.ar closed by remote host. 
+Connection to docker.linsi.edu.ar closed.
+pablo@pablo-ubuntu:~$ 
+pablo@pablo-ubuntu:~$ 
+pablo@pablo-ubuntu:~$ ppid %d\n"gertpid(), getppid()); 
+    
+  }
+if ( i == 2){
+  printf("la suma es: %d", getpid() + getppid() );
+  }
+
+
+
+return 0;
+
+líneas independientes: id del usuario, nombre completo, ruta a tu home y shell
+configurado # por defecto. Finalmente empaquetar el directorio "usuarios
+conectados".
+#!/bin/bash
+if [ ! -d "usuarios conectados" ]; then
+  mkdir usuarios_conectados
+fi
+for usuario in $(who | cut -d" " --1 | sort -u); do
+  datos=$(cat /etc/passwd | grep $usuario)
+  id=$(echo $datos | cut -d":" -f 3)
+  echo "id: $id" >> usuarios conectados/datos_$usuario.txt
+  nombre=$(echo $datos | cut -d":" -f 5)
+  echo "nombre: $nombre" >> usuarios conectados/datos_$usuario.txt
+  home=$(echo $datos | cut -d":" -f 6)
+  echo "home: $home" >> usuarios conectados/datos_$usuario.txt
+  shell=$(echo $datos | cut -d":" -f 7)
+  echo "shell; $shell" >> usuarios conectados/datos_$usuario.txt
+done

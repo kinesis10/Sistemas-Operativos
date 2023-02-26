@@ -1,0 +1,9 @@
+#!/bin/bash
+
+clear
+cp /etc/fstab $HOME/Escritorio/SO/practica2Scrip UUID 
+
+UUID=$(grep "ext4" UUID | cut -d "/" -f1 | cut -d "=" -f2)
+ echo " el identificador unico universal de mi disco virtual es " $UUID
+ 
+

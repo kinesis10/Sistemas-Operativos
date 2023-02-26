@@ -1,0 +1,205 @@
+ej 11 con estructura case
+
+echo "ingrese la palabra clave"
+read clave
+case $clave in
+secreto)
+
+  echo "...bienvenido!!"
+;;
+*)
+  echo "palabra incorrecta acceso denegado, la clave no es  " $clave
+  ./ej11Case.sh
+;;
+
+esac
+ ej 11 con estructura if
+ #!/bin/bash
+
+echo "ingrese la palabra clave"
+read clave
+
+if [[ $clave == "secreto" ]]; then
+  echo "Bienvenido"
+else
+  echo "Clave incorrecta" $clave
+fi
+ej 12
+
+#!/bin/bash
+if [[ ! $# -eq 2 ]]; then
+  echo "debe ingresar 2 string para compararlos"
+  exit
+fi
+if [[ $1 == $2 ]]; then
+  echo "los string ingresados son iguales"
+else
+  echo "los string ingresados NO son iguales"
+
+fi
+ej 13 
+#!/bin/bash
+
+if [[ ! $# -eq 2 ]]; then
+  echo " debe ingresar dos parametros"
+  exit
+fi
+if [[ ! -d $1 || ! -d $2 ]]; then
+  echo "no  son directorios "
+  exit
+fi
+tam1=$(du $1)
+tam2=$(du $2)
+if [[ $1 -gt $2 ]]; then
+  echo "$1 es de mayor tamanio $tam1"
+else
+  echo "$2 es de mayor tamanio $tam2"
+fi
+
+ej 14
+#!/bin/bash
+
+if [[ ! $# -eq 1 || ! -f $1 ]]; then
+  echo "debe ingresar un archivo ordinario"
+  exit
+fi
+read -p "ingrese la cadena de texto a eliminar " elim
+
+sed "s/$elim//g" $1 > salida
+chmod u+rw salida
+cat salida
+rm salida
+ 
+ ejercicio 15
+ #!/bin/bash
+
+#Hacer un script que lea por parmetro el directorio tp2 (solo los ejercicios de$
+#archivo leido cambiarle la palabra bash por sh, y guardar el archivo modificad$
+#directorio llamado scripts-sh' dentro de tp3
+
+if [[ ! -d $1 || ! $# -eq 1 ]]; then
+  echo "es necesario ingresar un directorio como parametro"
+  exit
+fi 
+rm -r scripts-sh
+mkdir scripts-sh
+for i in $(find $1/* -type f -name "*.sh"); do
+  sed "s/bash/sh/g" $i > imod
+  mv imod scripts-sh
+done
+
+## solo me muestra un archivo con ext .sh, pero cambia el bash por sh
+ej 16
+
+#!/bin/bash
+
+#Hacer un script que lea un archivo por parmetro y borre un rango de lineas del$
+#Chequear que el archivo pasado por par  metro sea de tipo ordinario. El rango $
+#borrar pasarlo por par  metro
+
+if [[ ! $# -eq 2 ]]; then
+  echo "Debe imgresar un Parametro"
+  exit
+fi
+if [[ ! -f $1 ]]; then
+  echo"no es un archivo ordinario"
+  exit
+fi
+sed "$2" $1
+cat $1 
+wc -l $1
+
+ej 17
+
+#!/bin/bash
+
+#Hacer un script que acepte un fichero como par  metro, comprobar si este exist$
+#que si exista convertir todas sus letras min  sculas en may  sculas en lo que
+#respecta al contenido del mismo.
+
+
+if [[ ! -f $1 ]]; then
+  echo "Debe ingresar un archivo ordinario"
+  exit
+fi
+sed "s/[a-z]/\U&/g" $1 > mayusculas
+cat mayusculas
+
+ej 18
+
+#!/bin/bash
+#Hacer un scripts que al pasarle un directorio cualquiera que contenga archivos$
+#le borre a cada uno de los archivos las l  neas 2 a 5, el nuevo archivo de sal$
+#igual que el original con el agregado al final del nombre  -m , los archivos n$
+#un directorio de nombre ar-modificados
+
+if [[ ! -d $1 ]]; then
+  echo"el parametro debe ser un directorio"
+  exit
+fi
+if [[ ! $# -eq 1 ]]; then
+  echo"Debe ingresar un Parametro"
+  exit
+fi
+rm -r ar-modificados
+mkdir ar-modificados
+for i in $($1/*); do
+  if [[ -f $i ]]; then
+    sed "1,3d" $i > $i-m
+    mv $i-m ar-modificados
+  fi
+done
+#no funciona... corregir
+
+ej 19
+
+#!/bin/bash
+
+#Hacer un scripts que al pasarle un directorio cualquiera que contenga archivos$
+#le inserte 3 espacios en blanco al principio de cada l  nea.
+
+if [[ ! -d $1 ]]; then
+  echo"lo ingresado no es un directorio"
+  exit
+fi
+if [[ ! $# -eq 1 ]]; then
+  echo"Debe ingresar un parametro"
+  exit
+fi
+
+for i in $($1*); do
+  if [[ -f $i ]]; then
+    sed -i "s/^\s*//1" $1
+  fi
+done
+sed 's/^\s*//'    # Uso del par  metro "\s"
+
+ej 20
+
+#!/bin/bash
+
+#Escribir un script que copie todos los archivos ejecutables de la carpeta  ^`^$
+#llamada  ^`^|execu ^`^} y los no ejecutables a una carpeta llamada  ^`^|no-exe$
+#listado con los nombres de los archivos copiados.
+
+
+
+if [[ -d exec && -d no-exec ]]; then
+  rm -r exec no-exec
+fi
+mkdir exec no-exec
+
+for i in $(find ../tp2 -type f -executable); do
+  cp $i exec
+done
+for i in $(find ../tp2 -type f ! -executable); do
+  cp $i no-exec
+done
+ls exec >> lista
+ls no exec >> lista
+cat lista
+## nose si hace lo que tiene que hacer
+
+
+
+

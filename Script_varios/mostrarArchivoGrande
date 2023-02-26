@@ -1,0 +1,70 @@
+# Realizar un script utilizando una estructura repetitiva, que recorra un directorio
+# cualquierea pasado por parametro y devuelva el nombre del archivo comun (no directorio)
+# que tiene mayor tamaño (devolver nombre y tamaño). A su vez, validar que el parametro
+# no falta y sea realmente un directorio.
+
+#!/usr/bin/env bash
+
+clear # Siempre es mas prolijo trabajar con la pantalla despejada
+if [ ! $1 ]; then # Corroboro si se ha pasado el parametro necesario.
+        echo "El script solicita 1 parametro"
+        exit # Si no se tiene el parametro, se aborta
+fi
+
+if [ ! -d $1 ]; # Si el primer parametro (el unico) no es un directorio...
+then
+        echo "El parametro debe ser un directorio"
+        exit # Si no es un directorio se aborta 
+fi
+
+echo "Bienvenido. Se le dira cual es el archivo mas grande que pertenece al directorio pasado por parametro"
+echo " "
+sleep 2 # Se detiene el script dos segundos
+for i in $1/*; do # - Se corrobora cada archivo dentro del directorio pasado como parametro
+		  # - La variable "i" tomara el papel de cada archivo dentro del directorio
+		  # - El conjunto de los caracteres $1/* indica que no se esta hablando de 
+		  # del directorio $1, sino de los archivos ligados a él 
+        
+	if [ -f $i ]; # Si el archivo analizado es un archivo comun... 
+	then 
+                TAM=$(du -s $i | cut -d "/" -f1) 
+
+# - El comando du sirve para cononocer 
+# cuanta memoria ocupa en disco un archivo. Combinado con -s, nos da el valor total de dicho 
+# archivo. En el caso de un archivo comun no se aprecia el potencial de la opcion -s, 
+# pero si no se usara, con un directorio el comando du nos devolveria el valor de memoria 
+# ocupada por cada uno de los archivos dentro del directorio y no el valor de memoria 
+# ocupada por el directorio en cuestion.
+# - Luego, al combinar con el comando cut, lo que se hace es con la opcion -d determinar un
+# delimitador para separar el texto que se desea cortar (el comando cut sirve para eso). En 
+# este caso el delimitador es "/". El texto devuelto por el comando du será cortado en tantas 
+# partes segun la cantidad de "/" que aparezcan en él. Luego, la opcion -f1 nos idica que 
+# de todas dichas partes, se tomará solo la primera. En este caso, el tamaño del archivo.               
+# - Finalmente se guarda este valor en la variable $TAM
+		
+		echo $TAM $i >> archivos # Se guarda el tamaño del archivo junto al nombre
+# de este en un archivo que (si no existe) es creado con el nombre de "archivos".
+# - El simbolo >> significa que lo que se agregue en el archivo "archivos" sera agregado al 
+# al final de éste, y no pisara nada. Caso contrario al simbolo >, el cual pisa todo lo 
+# existente en el archivo "archivos"
+        
+	fi # Fin del IF
+done # Fin del FOR
+
+RESULT=$( sort -nr archivos | head -n1 )
+
+# - El comando sort por defecto imprime en pantalla el contenido de un archivo de manera 
+# ordenada alfabeticamente. Este caso, con las opciones -n y -r se indica que se ordene 
+# numericamente y luego que se imprima en reversa. Por defecto se ordena numericamente de 
+# menor a mayor
+# - Al combinar lo anterior con el comando head, se imprime en pantalla solo las primeras 
+# 10 lineas del resultado dado por el comando sort. En este caso al estar la opcion -n1, solo 
+# se imprimira la primera linea del resultado, es decir, el numero mas grande junto al 
+# nombre del archivo que corresponde. 
+# - Finalmente se guarda todo en la variable $RESULT
+
+echo " "
+echo "El archivo mas grande del directorio $1 es $RESULT"
+echo " "
+echo "Espero que le haya gustado. Buenos dias"
+echo " "

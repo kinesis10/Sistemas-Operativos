@@ -1,0 +1,31 @@
+# Crear un Script que pregunte al usuario si se desea agregar algun dato a un archivo.
+# El archivo se debe llamar DATOS
+
+#!/usr/bin/env bash
+
+clear # Despejar la pantalla ayuda a trabajar con prolijidad
+
+echo "Buen dia. Desea agregar alguna informacion nueva al archivo DATOS? (s/n)"
+read ANSWER
+
+echo " "
+case $ANSWER in # Segun lo que se haya respondido
+
+	Si|si|s|S) echo "Introduzca la informacion a agregar:"
+		   read INFORMATION # Se guarda la informacion en $INFORMATION
+		   echo $INFORMATION >> DATOS # - Se guarda lo alojado en la variable
+					      # $INFORMATION en el archivo DATOS. Si 
+					      # este no existe al momento de guardar 
+					      # la informacion, es creado. 
+					      # - Prestar atencion a ">>". Este 
+					      # comando guarda lo que se pase como 
+					      # parametro de manera contigua a lo que 
+					      # ya poseia el archivo DATOS 
+					      # anteriormente. A diferencia del 
+					      # comando ">" que pisa lo anterior.
+	   	;;
+	*) echo "Como lo desee";; # En caso de responder n, N, no, NO o cualquier otra 
+				  # cosa, se despliega el mensaje "Como lo desee"
+esac
+echo "Que tenga un buen dia"
+

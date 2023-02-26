@@ -1,0 +1,49 @@
+4
+#!/bin/bash
+free | head -2 | tail-1 | awk '{print $2)'// con el print elijo la columna
+
+memTotal=$(free | head -2 | tail-1 | awk '{print $2)')
+echo "la memoria total de la RAM es: " $memTotal >> informeRAM
+memUsada=$(free | head -2 | tail-1 | awk '{print $3)')
+echo "la memoria usada : " $memUsada >> informeRAM
+memLibre=$(free | head -2 | tail-1 | awk '{print $4)')
+echo "la memoria libre es: " $memLibre >> informeRAM
+
+5con el comando vmstat muestra los procesos
+
+#!/bin/bash
+procesosEspCpu=$(vmstat | tail -1 | awk '{print $1}')
+procesosDormidos=$(vmstat | tail -1 | awk '{print $2}')
+procUsandoSwap=$(vmstat | tail -1 | awk '{print $3}')
+swapEntrante=$(vmstat | tail -1 | awk '{print $7}')
+swapSaliente=$(vmstat | tail -1 | awk '{print $8}')
+echo "cantidad de procesos esperansdo cpu" $procesosEspCpu >> cpu
+echo "cantidad de procesos dormidos" $procesosDormidos >> cpu
+echo "cantidad de procesos usando swap" $procesosUsandoSwap >> cpu 
+echo "memoria swap entrante" $swapEntrante >> cpu
+echo "memoria swap saliente" $swapSaliente >> cpu
+
+6
+read -p "si decea hab ingrese 1 si quiere hab ing 0", opcion
+if [[ $opcion -eq 1]]; then
+  sudo swapon -a
+fi
+if [[ $opcion -eq 0]]; then
+  sudo swapoff -a
+fi
+
+7
+read -p " ingrese 0, 50 o 100 para cambiar los niveles de intercambio",ni
+//chequear que se pase un numero y que sean los parametros indicados
+sudo sysctl vm.swappiness=$ni
+
+8
+
+
+
+
+
+
+
+
+

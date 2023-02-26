@@ -1,0 +1,52 @@
+trasmisor----receptor
+para medir el ruido se corta la linea, y lo que llega al receptor es solo ruido.(tiene que ver con la seguridad de los sistemas.
+
+             A ----------------------------------------------------->B
+            (bolsa de datos,bits)                                 PDU(trama)
+             con 0,1                                               (lo que se va a formar de A a B)
+                                                                   (necesita saber cuando comienza la trama) Stx y Etx
+                           <----------ACK(con bit en 0 o 1)         Stx puede ser parte del dato, por lo que se necesita el flag de comienzo 
+                                                                   7E = 0111 1110
+                                                                   
+            01111110                     1011111100                01111110
+            
+re arregla con el bit stafi, agregando un 0 despues de 5 unos
+01111110 101101111100                           01111110
+         despues del 5to 1 se le agrega un 0
+         
+ trama:---->ACK( envia un msj ok de recibido)acnoli
+ 
+ a manda msj a b, b manda un ACK, a lo espera cierto tiempo, y si no recive le ACK reenvia toda la trama,
+ 
+ 
+ mac address(control acceso al medio)
+ IPV4
+ IPV6
+ 
+ conectarse a internet
+ www.google.com.
+ configurar el
+ firewall
+ filter(protecion global, input ouput)
+ mangle
+ nat(fordwarf,post voy a bucar algo pero lo hace otra bombre,pre salgo de internet pero con otro nombre)
+ formas: se acepta todo
+         niego todo
+ protejer lo qu eviene hacia mi input output y foorware
+ 
+ darle éprmisos de ejecucionn a iptable y copiarlo en el /etc/init.d/    start    stop
+ 
+crear una carpera (mkdir) /var/lib/iptables/
+arranco copiando 
+sudo iptables -L
+172.16.2.134 ip de ruben
+
+/etc/init
+
+
+tcpdrump
+
+
+
+ 
+ nat

@@ -1,0 +1,50 @@
+# Realizar un Script que reciba como parametros a un directorio y luego 
+# una lista de archivos. Verificar si el directorio es un directorio y si los 
+# archivos son archivos. Una vez verificado, se deben guardar los archivos en 
+# el directorio especificado 
+
+#!/usr/bin/env bash
+
+clear # Despejar la pantalla resulta comodo
+if [ $# -lt 2 ]; # Se verifica si se han pasado los parametros necesarios
+then
+	echo "Disculpe. Faltan ingresar parametros"
+	exit
+fi
+
+if [ -d $1 ]; # Verifico si el primer parametro es un directorio
+then
+	DIRECTORY=$1 # Si es un directorio, lo guardo en la variable
+	shift # Corro la lista de parametros. Ahora el primer parametro a 
+	      # leer es el parametro numero 2
+else
+	echo "El primero parametro no es un directorio. Lo siento"
+	exit
+fi
+COUNT=1 # Contador para saber el numero de cada parametro
+for i in $*; 
+do 
+	if [ -f $i ]; # Verifico que el parametro sea un archivo 
+	then
+		cp $i $DIRECTORY # Copio el archivo al directorio pasado 
+				 # por paramtro. Quizas existe la tentacion
+				 # de utilizar el comando mv para mover los
+				 # los archivos en vez de copiarlos, El 
+				 # problema es que eso solo se podra si los 
+				 # archivos pasados como parametros se 
+				 # encuentren en el directorio actual. Sino,
+				 # al no poseer la ruta de los mismos, no 
+				 # se podra moverlos. Copiarlos por otro 
+				 # lado, no presenta complicaciones.
+	else
+		echo "El parametro $COUNT no es un archivo"
+	fi
+	COUNT=$(( $COUNT+1 )) # Sumo el contador. Prestar atencion a los 
+			      # parentesis dobles que encierran la operacion
+done
+
+echo " "
+echo "Los archivos fueron guardados en el directorio $DIRECTORY"
+echo "Adios"
+
+

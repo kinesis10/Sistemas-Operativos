@@ -1,0 +1,30 @@
+# Crear un script que liste una serie de directorios pedidos al usuario
+
+#! /bin/bash
+
+clear # - Siemrpe es mas comodo trabajar con la pantalla despejada
+
+echo "Buen dia. Ingrese una serie de directorios"
+read DIRECTORIOS
+# - En $DIRECTORIOS se guarda la serie de directorios como una lista. Cada parametro 
+# pasado va a ser interpretado al ser separado por un espacio. 
+
+PUNTERO=0
+# - Creo una variable que me servira de puntero para recorrer la lista de directorios. Esta 
+# variable solo sirve para saber en que posicion de la lista me encuentro en cada momento
+
+for n in $DIRECTORIOS; # Recorro la lista
+do
+	PUNTERO=$(( $PUNTERO + 1 ))
+	if [ ! -d $n ]; # La expresion entre corchetes controla que $n sea un directorio
+	then
+		echo "Directorio numero $PUNTERO : No es un directorio."
+	else
+		echo "Directorio numero $PUNTERO : $n "		
+	fi # Termina el IF
+
+done # Termina el FOR
+
+echo "..."
+echo "..."
+echo "Adios. Que tenga buen dia"

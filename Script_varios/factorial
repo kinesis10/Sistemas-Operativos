@@ -1,0 +1,48 @@
+# Crear un script que recursivamente genere la funcion factorial
+
+#!/usr/bin/env bash
+
+clear # Es prolijo trabajar con la pantalla despejada
+
+function factorial() # Se declara la funcion factorial
+{
+	NUMBER=$1
+	IS_NUMBER=$( echo $NUMBER | grep -c [0-9] )
+	# - El comando echo muestra en pantalla lo que se le pase como parametro.
+	# - El comando grep con la opcion -c devuelve la cantidad de coincidencias
+	# que hubo. En este caso se busca si en la entrada existe algun numero 
+	# decimal 
+	
+	if [ $IS_NUMBER -eq 1 ]; # Si la variable $IS_NUMBER es igual a 1 
+				 # significa que hubo al menos una coincidencia
+	then 
+		if [ $NUMBER -lt 2 ]; # Si $NUMBER es menor que dos..
+		then
+			echo 1 # Se imprime 1
+		else
+			echo $(( $NUMBER * $(factorial $(( $NUMBER - 1 )) ) ))
+			# Se hace uso de la recursion. Se vuelve a llamar a la 
+			# funcion factorial.
+		fi # Fin del IF interno
+	else 
+		echo "ERROR"
+
+	fi # Fin del IF
+}
+
+if [ ! $1 ]; # Si no existe ningun parametro...
+then
+	echo "Buen dia. Introduzca un numero"
+	read NUMBER # Se guarda el valor por teclado en la variable $NUMBER
+else
+	NUMBER=$1 # Si existe el parametro, se guarda en $NUMBER
+fi # Fin del IF
+
+sleep 1 # Se detiene la ejecucion 1 segundo
+echo " "
+echo "El factorial de $NUMBER es $( factorial $NUMBER )" # Se invoca a factorial
+
+echo " "
+echo "Script finalizado con exito"
+echo " "
+

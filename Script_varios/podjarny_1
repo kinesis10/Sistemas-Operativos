@@ -1,0 +1,170 @@
+# - Listar los archivos modificados en un intervalo de tiempo de un determinado
+# directorio, o un grupo de directorios.
+
+# - NO FUNCIONA. NO LOGRO DARME CUENTA POR QUE
+# - Si pueden explicar el error seria genial
+
+# - Antes de leer el codigo, hago saber que la solucion encontrada para 
+# comparar las fechas fue pasar todo a segundos pasados desde 1970. A partir 
+# de ahi saber cual fecha es mas antigua que otra
+
+#!/usr/bin/env bash
+
+clear # Es prolijo trabajar con la pantalla despejada
+
+function corroborar_directorios(){
+	# - Verifica que todos los directorios que fueron pasados como 
+	# parametros sean precisamente directorios. Los que no son directorios 
+	# los ignora y los que si lo son, los guarda en el archivo 
+	# directorios_script.txt
+	
+	# - Variable para saber que parametro no es un directorio
+	COUNT=1
+
+	# - Bucle for para recorrer los parametros directorios para saber 
+	# cuales son o no directorios realmente
+	for i in $*;
+	do
+		if [ ! -d $i ];
+		then
+			echo "Disculpe. El parametro numero $COUNT ($i) no es un directorio" 
+		else
+			echo $i >> $HOME/directorios_script.txt
+		fi
+		COUNT=$(( $COUNT + 1 ))
+	done
+}
+
+
+function verificar_existe_directorio(){
+	# - Si en la verificacion anterior no se encontro ningun directorio
+	# el bucle while obligará al usuario a introducir un directorio
+	# correcto.
+	
+	while [ ! -f $HOME/directorios_script.txt ];
+	do
+		echo " "
+		echo "No ha ingresado ningun directorio valido"
+		echo " "
+		echo "Ingrese nuevamente uno o varios directorios:"
+		read NEW_DIR
+		corroborar_directorios $NEW_DIR
+	done
+}
+
+function verificar_tiempo(){
+	# - Verifica si el tiempo pasado como parametro corresponde a una 
+	# cantidad numerica que representarian a los minutos determinantes del 
+	# intervalo de tiempo buscado. 
+	# - Si el tiempo pasado no corresponde a una cantidad numerica, 
+	# vuelve a pedir un nuevo valor. 
+
+	TIME=$1
+	IS_NUMBER=$( echo $TIME | grep -c [0-9] )
+	while [ $IS_NUMBER -eq 0 ];
+	do
+		echo " "
+		echo "El valor ingresado para el intervalo de tiempo no es valido"
+		echo "Introduzca un intervalo de tiempo (minutos):"
+		read TIME
+		IS_NUMBER=$( echo $TIME | grep -c [0-9] )
+	done
+}
+
+function comparar(){	
+	# - Recibe en el primer parametro el archivo a verificar y en el 
+	# segundo recibe el tiempo (segundos) para comparar si se ha 
+	# modificado antes o despues de dicho tiempo. 
+	# - Si el archivo fue modificado despues del tiempo para comparar,
+	# se guarda el nombre en un archivo llamado archivos_script.txt 
+	
+	ARCHIVO=$1
+	TIEMPO=$2
+        TIME_SECONDS_FILE=$( stat -c%Y $ARCHIVO )
+	if [ $TIEMPO -le $TIME_SECONDS_FILE ];
+	then
+		echo $ARCHIVO >> $HOME/archivos_script.txt
+	fi
+}
+
+function verificar_archivos_intervalo(){
+	# - Recibe en el primer parametro el directorio al cual se le van a 
+	# analizar los archivos y en el segundo parametro recibe el tiempo 
+	# (minutos) introducido por el usuario que determina el intervalo de 
+	# tiempo a controlar.
+	# - Recorre la lista de archivos que existen dentro de los directorios
+	# ingresados por el usuario.
+	
+	DIRECTORY=$1
+	TIME=$2
+	
+        TIME_TO_SECONDS=$(( $TIME * 60 ))
+        TIME_SECONDS_DATE=$( date +%s )
+        TIME_SECONDS_COMPARATE=$(( $TIME_SECONDS_DATE - $TIME_TO_SECONDS ))
+
+	PRI_LINE=1
+	ls -1 $DIRECTORY | while read FILE;
+				do
+				if [ $PRI_LINE -ne 1 ];
+				then
+					ROUTE_FILE= $(echo "$DIRECTORY/$FILE")
+					if [ -f $FILE ];
+					then
+						comparar $ROUTE_FILE $TIME_SECONDS_COMPARATE
+					fi
+				else
+					PRI_LINE=2
+				fi
+				done					
+}
+
+# - Elimino el archivo donde se guardan los directorios ingresados por el 
+# usuario y el archivo donde se guardan los archivos que fueron modificados
+# dentro del intervalo deseado. 
+# - Los borro para que no se superpongan los datos en reiteradas ejecuciones 
+# del script
+
+rm -rf $HOME/directorios_script.txt
+rm -rf $HOME/archivos_script.txt
+
+# - Si no se pasaron parametros 
+if [ ! $# -gt 0 ];
+then
+	echo "Buen dia. Introduzca uno o mas directorios que desee:"
+	read DIRECTORIES
+else
+	DIRECTORIES=$*
+fi
+
+# - Llamamos a las funciones que verifican los directorios pasados como 
+# parametros
+corroborar_directorios $DIRECTORIES
+verificar_existe_directorio
+
+# - Pido el tiempo al usuario que definiria el intervalo a analizar
+echo " "
+echo "Introduzca un intervalo de tiempo (minutos):"
+read TIME
+
+# - Verifico si el tiempo pasado corresponde a una cantidad numerica
+verificar_tiempo $TIME
+
+# - Recorro los directorios pasados como parametros
+
+cat $HOME/directorios_script.txt | while read DIR;
+				do
+					verificar_archivos_intervalo $DIR $TIME					
+				done
+
+if [ -f archivos_script.txt ];
+then
+	echo " "
+	cat $HOME/archivos_script.txt
+else
+	echo " "
+	echo "No se han encontrado archivos modificados en el intervalo de tiempo propuesto"
+fi
+	
+echo " "
+echo "Que tenga un buen dia. Adios"
+echo " "

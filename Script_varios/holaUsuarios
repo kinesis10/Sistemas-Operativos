@@ -1,0 +1,39 @@
+# Hacer un script que cree un directorio usuarios y dentro del mismo
+# cree un fichero por cada usuario que hay en el sistema (el nombre de cada
+# fichero debe ser el nombre de usuario) que contenga la frase: Hola <nombreusuario>
+# y cuyo dueño sea el mismo usuario.
+
+
+#!/usr/bin/env bash
+
+# NOTA: Para cambiar dueño con chown se necesitan permisos especiales. Esto quiere
+# decir que habra que ejecutar el script en modo superusuario
+
+mkdir usuarios # Se crea el directorio "usuarios". Al no especificar una ruta 
+	       # en especial, se crea en el directorio actual, es decir, en donde 
+	       # se encuentra el usuario al momento de ejecutar el script.
+
+for i in $(cat /etc/passwd | cut -d ":" -f1); 
+# - En el archivo /etc/passwd se guarda un registro de todos los usuarios del
+# sistema. El comando cat lo unico que hace es mostrar su contenido.
+# - El comando cut se utiliza para cortar en partes un texto. La opcion -d
+# indica el caracter que delimitara cada parte. En este caso el delimitador sera
+# el caracter ":". La opcion -f1 indica que solo nos quedaremos con la primera de
+# todas las partes obtenidas. En este caso coincide con el nombre de cada usuario.
+# - De esta forma, en cada iteracion del FOR se trabajara con el nombre de cada
+# usuario, siendo i=nombre_usuario
+do
+        echo "Hola $i" > usuarios/$i # Guarda la frase "Hola $1" en el archivo 
+				     # usuarios/$i, es decir, en un archivo dentro 
+				     # del directorio "usuarios" que tiene el mismo 
+				     # nombre que el propio usuario. 
+        
+	chown $i usuarios/$i # - Se cambia el propietario del archivo. El comando chown
+			     # solo puede ser ejecutado en modo superusuario. Ahora 
+			     # cada archivo tendra de priopietario al usuario que 
+			     # tenga el mismo nombre del archivo en cuestion.
+done
+
+echo " "
+echo "Script finalizado exitosamente"
+echo " "

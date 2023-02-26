@@ -1,0 +1,68 @@
+# Hacer un script al cual se le pase como parametro un directorio y una
+# palabra. El script debe enviar a un archivo llamado matched el nombre
+# de cada archivo que se encuentre dentro del directorio y que contenga
+# la palabra indicada
+# Comprimir el archivo matched en matched.gz
+
+#!/usr/bin/env bash
+
+clear # Es mas prolijo trabajar con la pantalla despejada
+
+if [ ! $# = 2 ]; # Si la cantidad de parametros no es igual a 2...
+then
+	echo "Disculpe. Debe agregar dos parametros (directorio - palabra)"
+	echo " "
+	exit # Si no es igual a 2, se aborta el script
+fi # Fin del IF
+
+if [ ! -d $1 ]; # Si el primer parametro no es un directorio...
+then
+	echo "Disculpe. El primer parametro debe ser un directorio"
+	echo " "
+	exit # Si no es un directorio, se aborta el script
+fi # Fin del IF
+
+DIRECTORIO=$1 # - Guardo en variables los valores de los parametros. Recuerda 
+PALABRA=$2    # siempre nombrar a las variables con mayusculas.
+
+HUBO_COINCIDENCIA=0 # Variable para saber si hubo al menos una coincidencia
+
+for i in $DIRECTORIO/*;  # - Para cada uno de los archivos dentro del directorio
+			 # pasado como parametro...
+do
+        if [ -f $i ]; # Se analiza si cada archivo es un archivo comun
+	then 
+                CONTIENE=$(cat $i | grep $PALABRA | wc -l)
+		# - Con el comando cat lee el archivo.
+		# - Con el comando grep busca coincidencias en el archico 
+		# con lo que contenga la variable $PALABRA
+		# - Con el comando wc -l se cuentan la cantidad de lineas de 
+		# de coincidencia en el archivo
+                
+		if [ $CONTIENE -gt 0 ]; # Si hubo alguna coincidencia...
+		then
+                        echo $i >> matched # - Guarda el nombre del archivo que 
+					   # se este analizando  en el archivo 
+					   # llamado "matched". Si este no 
+					   # existe, es creado.
+					   # - El comando >> guarda lo que se 
+					   # le pase como entrada al final del 
+					   # archivo destino. No es el caso de 
+					   # el comando > que pisa lo que el 
+					   # archivo destino guarde.
+			HUBO_COINCIDENCIA=$(($HUBO_COINCIDENCIA + 1))
+                fi # Fin del FI interno
+        fi # Fin del FI
+done # Fin del FOR
+
+if [ $HUBO_COINCIDENCIA = 0 ]; # PRESTAR ATENCION A LOS ESPACIOS
+then
+	echo "Disculpe. No se encontraron archivos que contengan la palabra $PALABRA"
+else
+	echo "Se encontraron $HUBO_COINCIDENCIA archivos con la palabra $PALABRA"
+	echo "Los $HUBO_COINCIDENCIA nombres de dichos archivos fueron guardados en el archivo matched" 
+	gzip matched # Se comprime el archivo "matched" en formato gz
+fi
+echo " "
+echo "Script finalizado exitosamente"
+echo " "

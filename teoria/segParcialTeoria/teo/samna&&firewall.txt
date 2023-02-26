@@ -1,0 +1,47 @@
+sudo apt install samba
+sudo apt install net-tool
+sudo netstat -tnlp
+
+copiar el iptables en etc/init.d
+darle permisos de ejecucion chmod 774 iptables
+hacer :
+sudo /etc/init.d/iptables start (levanto el firewall)
+sudo /etc/init.d/iptables stop
+ cuando hago stop activo el archivo inactive
+ lo que tengo que hacer es modificar el script active para hacer lo que me pide el enunciado.
+ 
+ crear una carpeta mkdir en /var/lib/iptables
+ copiar inactive en : cp inactive/active /var/lib/iptables
+ darles permisos chmod 774 active/inactive
+ 
+ onfigurar iptables
+configuro permisos de administrador
+sudo su
+contraseña:
+#aliminar reglas en las tablas filter y nat
+iptables -t -F(-t indico que tabla voy a usar)(- F elimina todas las reglas del cortafuego)
+iptables -t nat -F(reinicio todas las reglas)
+iptables -Z
+iptables -t nat -Z
+#reiniciar los contadores en las tablas filter y nat
+iptables -z
+iptables -t nat -Z
+(aceptamos todo el trafico o denegamos todo el trafico)
+elijo el parametro or defecto
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+COMPRUEBO CON:
+iptables -L -nv --line-numbers
+para ver los puertos abiertos uso:
+ss -ltuna
+se crea un scrip para manejarlos
+nano iptDenegar.sh
+crear un script para aceptar
+nano iptAceptar.sh
+cambia la politica de trafico
+#listar las reglas
+iptables -L - nv --line-numbers
+#otra forma
+iptables -S (muestra las reglas en el orden que se introdujeron)
+

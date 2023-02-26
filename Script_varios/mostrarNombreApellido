@@ -1,0 +1,18 @@
+# Escribir un script que te pida por teclado el/los nombre/s, despues el/los  apellido/s,
+# permanezca esperando durante 5 segundos y despues muestre por pantalla un mensaje
+# diciendo "Tu nombre completo es $nombre/s $apellido/s
+
+#! /bin/bash
+
+clear
+
+IFS="," # Cambio el separador. Si no hiciera esto al ingresar dos nombres se entenderian 
+	# como dos variables distintas
+echo "Buen dia. Introduzca su nombre:"
+read nombre
+echo "Bienvenido $nombre . Cual es su appelido?"
+read apellido
+echo "Aguarde unos segundos..."
+sleep 5 # Genero una espera de 5 segundos
+echo "Genial. Tu nombre completo entonces es $nombre $apellido . Que tengas un Buen dia!"
+IFS=" " # Vuelvo a configurar al separador como " "(espacio)

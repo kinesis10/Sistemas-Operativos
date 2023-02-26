@@ -1,0 +1,58 @@
+# Realizar un script utilizando la sentencia while, que lea un archivo 
+# cualquiera linea por linea y guarde cada una de ellas en un archivo llamado 
+# copia, a su vez vaya mostrando cada linea por terminal con un retardo de 3 
+# segundos.
+
+#!/usr/bin/env bash
+
+clear # Es prolijo trabajar con la pantalla despejada
+
+if [ ! $# -eq 1 ]; # Si la cantidad de paramtros no es igual a 1...
+then
+	echo "Disculpe. Debe ingresar un parametro"
+	echo " "
+	exit # Si no es igual, se aborta el script
+fi # Fin del IF
+
+if [ ! -f $1 ]; # Si el primer parametro no es un archivo...
+then
+	echo "Disculpe. Debe ingresar un archivo como primer parametro"
+	echo " "
+	exit # Si no es un archivo, se aborta el script
+fi # Fin del IF
+
+FILE=$1 # - Guardo el contenido del primer parametro en la variable $FILE
+	# - Recuerda siempre trabajar con variables y nombrarlas a estas con
+	# mayusculas.
+
+cat $FILE | while read LINE; # - El comando cat imprime el contenido del
+			     # archivo pasado como parametro. En este caso el 
+			     # archivo $FILE
+			     # - El comando while recibe como parametro de 
+			     # entrada al resultado del comando cat. En este 
+			     # caso el contenido del archivo $FILE. Luego con
+			     # la opcion read junto a la palabra LINE indica
+			     # que el contenido de cada linea del archivo 
+			     # se guardara en esta variable inventada $LINE.
+ 	                     # - El comando while ejecutara las instrucciones 
+			     # del bloque mientras haya una linea para leer 
+			     # en el archivo.
+		do
+                       echo $LINE >> copia # - El comando echo imprime en  
+					   # pantalla lo que se le pase como 
+					   # paramtro. 
+					   # - El comando >> guarda lo que se 
+					   # le pase como entrada en el archivo
+					   # que se le pase como salida. En 
+					   # este caso guarda el contenido de 
+					   # $LINE en el archivo copia. 
+					   # - El archivo copia si no existe, 
+					   # es creado. 
+                       echo $LINE # Imprime el contenido de la variable $LINE  
+		       sleep 3 # Detiene la ejecucion tres segundos
+	       done # Fin del WHILE
+
+echo " "
+echo "Script finalizado con exito"
+echo " "
+

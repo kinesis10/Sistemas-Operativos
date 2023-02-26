@@ -1,0 +1,21 @@
+#/bin/bash
+echo " pasar dos archivos por parametros para mostrar el que tiene mas lineas"
+if [ ! $# -eq 2 ]; then
+  echo " deben ser dos parametros"
+  exit
+fi
+if [ ! -f $1 ] || [ ! -f $2 ]; then
+  echo "uno de los parametros ingresados no es un archivo"
+  exit
+fi
+
+a1=$( wc -l $1 | cut -d " " -f1 )
+a2=$( wc -l $2 | cut -d " " -f1 )
+
+if [[ $a1 > $a2 ]]; then
+  echo "el archivo $1 tiene mas lineas $a1 en total"
+else
+  echo "el archivo 2 $2 tiene mas lineas $a2 en total"
+fi
+
+

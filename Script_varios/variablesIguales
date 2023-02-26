@@ -1,0 +1,29 @@
+# Crear un Script que pida dos cadena de caracteres, las guarde en dos variables, las 
+# compare y diga si son iguales o no.
+
+#! /bin/bash
+
+clear # Siempre es recomendable trabajar con la pantalla despejada
+IFS="," # Se cambia el separador. Por defecto es " " (espacio en blanco) pero si lo 
+	 # dejamos asi, al escribir la cadena de caracteres mas adelante, las variables
+	 # CADENA1 y CADENA2 alojaran una lista de palabras en vez de una cadena compeleta
+
+echo "Buen dia. Ingrese una cadena de caracteres cualquiera:"
+read CADENA1 # Recuerda siempre nombrar a las variables en mayusculas
+echo " "
+echo "Exelente! Ahora ingresa nuevamente una cadena de caracteres para comparar:"
+read CADENA2
+echo " "
+
+if [ $CADENA1 = $CADENA2 ]; # Prestar atencion a los espacios. No es superfluo
+then
+	echo "Las cadenas son iguales!"
+else
+	echo "Las cadenas son distintas!"
+
+fi # Finalizacion de IF
+
+unset IFS # Vuelvo a configurar al separador como " " (espacio en blanco)
+
+echo "Gracias por ingresar las cadenas. Adios!"
+

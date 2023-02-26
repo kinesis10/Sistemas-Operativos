@@ -1,0 +1,53 @@
+# Realizar un script el cual solicite un numero y responda mostrando los 6 
+# siguientes. Los 6 numeros deben quedar guardados en orden inverso en el 
+# archivo numeros
+#!/usr/bin/ env bash
+
+clear # Es prolijo trabajr con la pantalla despejada
+
+if [ ! $1 ]; # Si no existe ningun parametro...
+then
+	echo "Buen dia. Introduzca un numero cualquiera:"
+	read NUM # Toma el numero por teclado
+else
+	NUM=$1 # Si existe, lo guarda en una variable. Recuerda siempre trabajar
+	       # con variables y nombrarlas en mayusculas.
+
+fi # Fin del IF
+
+for i in $(seq 6); # Realiza el ciclo for 6 veces...
+ do
+	let NUM=$NUM+1 # - El comando let se ultiliza para dar nuevos valores 
+		       # a las variables.
+		       # - Sin uso del comando let habria que utilizar la serie 
+		       # de caracteres NUM=$(( operacion_aritmetica )) 
+    
+	echo $NUM >> numeros # - Guarda el valor de la variable en el archivo
+			     # numeros. 
+			     # - El comando >> guarda lo que se le pase por 
+			     # entrada. Si el archivo (en este caso) numeros no 
+			     # existe, es creado. Vale aclarar que el comando 
+			     # >> guarda al final de lo que ya tenga el archivo 
+			     # numeros, sin pisar el contenido anterior. 
+done # Fin del FOR
+
+echo $(sort -nr numeros) >numeros # - El comando sort ordena por defecto 
+				  # alfabeitcamente. Al usar la opcion -n lo 
+				  # que hace es ordenar numericamente en vez
+				  # de alfabeticamente. El sentido de orden 
+				  # por defecto es de menor a mayor. La opcion 
+				  # -r lo que hace es revertir dicho sentido de 
+				  # ordenamiento. 
+				  # - Al final, el comando > guardara el 
+				  # resultado en el archivo "numeros", borrando 
+				  # el anterior contenido. 
+
+cat numeros # El comando cat muestra en pantalla el contenido del archivo
+
+echo " "
+echo "Script finalizado con exito"
+echo "- Recuerde que si utiliza nuevamente este script, debe borrar el archivo numeros"
+echo "- De otro modo, el contenido de dicho archivo se ira acumulando"
+echo " "
+echo "Que tenga un buen dia. Adios"
+echo " "

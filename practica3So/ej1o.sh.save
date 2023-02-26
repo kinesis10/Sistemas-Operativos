@@ -1,0 +1,17 @@
+#Hacer un script que visualice un menú de tres opciones, la primera borra un fichero
+#cualquiera, la segunda visualiza un fichero, la tercera copia un archivo al directorio actual y
+#la cuarta sale del script.
+
+#!/bin/bash
+
+read -p"
+pciones:
+
+1-eliminar
+2-visualizar
+3- copiar
+4-salir
+" opcion
+case $opcion in
+ 1)
+	read -p

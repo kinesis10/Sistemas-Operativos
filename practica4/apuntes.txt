@@ -1,0 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+
+ ps aux | awk '{print $1, $2}'// me traigo los nomnres d elos usuarios y sus pid
